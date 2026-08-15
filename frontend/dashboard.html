@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - VaultGuard Enterprise</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand-header">
+        <div class="brand-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div>
+          <div class="brand-title">VaultGuard</div>
+          <span class="brand-badge">ENTERPRISE</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main Console</div>
+        <a href="dashboard.html" class="nav-item active">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="vault.html" class="nav-item">
+          <i class="fa-solid fa-vault"></i>
+          <span>Password Vault</span>
+        </a>
+        <a href="vault.html?favorite=true" class="nav-item">
+          <i class="fa-solid fa-star"></i>
+          <span>Favorites</span>
+        </a>
+        <a href="folders.html" class="nav-item">
+          <i class="fa-solid fa-folder-tree"></i>
+          <span>Folders</span>
+        </a>
+
+        <div class="nav-section-label">Security Tools</div>
+        <a href="add-password.html" class="nav-item">
+          <i class="fa-solid fa-key"></i>
+          <span>Add Credential</span>
+        </a>
+        <a href="security.html" class="nav-item">
+          <i class="fa-solid fa-shield-virus"></i>
+          <span>Security Center</span>
+        </a>
+        <a href="activity.html" class="nav-item">
+          <i class="fa-solid fa-list-check"></i>
+          <span>Activity Log</span>
+        </a>
+
+        <div class="nav-section-label">System Account</div>
+        <a href="profile.html" class="nav-item">
+          <i class="fa-regular fa-id-badge"></i>
+          <span>My Profile</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+          <i class="fa-solid fa-sliders"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn-logout-sidebar" onclick="logoutUser()">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout Securely
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-wrapper">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="page-header-title">
+          <i class="fa-solid fa-chart-pie" style="color:var(--accent-blue);"></i> Enterprise Dashboard
+        </div>
+        <div class="topbar-actions">
+          <a href="add-password.html" class="quick-action-btn">
+            <i class="fa-solid fa-plus"></i> Add Password
+          </a>
+          <a href="profile.html" class="user-profile-pill">
+            <div class="user-avatar user-avatar-display">A</div>
+            <div class="user-info-text user-name-display">Alex Morgan</div>
+          </a>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <div class="content-area">
+        <!-- Security Score Banner -->
+        <div class="security-score-banner">
+          <div class="score-text-area">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+              <i class="fa-solid fa-shield-heart" style="color:var(--accent-green);"></i>
+              <span style="font-size:0.8rem; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Overall Vault Security Score</span>
+            </div>
+            <h3 id="dash-score-status-text" style="color:var(--accent-green);">Excellent Vault Health</h3>
+            <p>Your enterprise credential vault is protected with AES-256 encryption & regular strength validation.</p>
+          </div>
+          <div class="score-circle-box">
+            <div>
+              <span id="dash-security-score" class="score-big-number">100</span>
+              <span class="score-max-text">/ 100</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-icon-box metric-blue">
+              <i class="fa-solid fa-key"></i>
+            </div>
+            <div>
+              <div id="dash-total-credentials" class="metric-value">0</div>
+              <div class="metric-label">Total Credentials</div>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon-box metric-green">
+              <i class="fa-solid fa-shield-check"></i>
+            </div>
+            <div>
+              <div id="dash-strong-passwords" class="metric-value">0</div>
+              <div class="metric-label">Strong Passwords</div>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon-box metric-red">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div>
+              <div id="dash-weak-passwords" class="metric-value">0</div>
+              <div class="metric-label">Weak Passwords</div>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon-box metric-yellow">
+              <i class="fa-solid fa-star"></i>
+            </div>
+            <div>
+              <div id="dash-favorites" class="metric-value">0</div>
+              <div class="metric-label">Favorites Saved</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two Column Section -->
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:24px;">
+          <!-- Recently Added Credentials -->
+          <div class="vg-card">
+            <div class="card-header-flex">
+              <div class="card-title-text">
+                <i class="fa-solid fa-clock-rotate-left" style="color:var(--accent-blue);"></i> Recently Added Credentials
+              </div>
+              <a href="vault.html" style="font-size:0.85rem; font-weight:600;">View All Vault <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div id="dash-recent-credentials-list">
+              <div style="text-align:center; padding:20px; color:var(--text-dim);">
+                <i class="fa-solid fa-spinner fa-spin"></i> Loading recent vault assets...
+              </div>
+            </div>
+          </div>
+
+          <!-- Security Alerts & Quick Actions -->
+          <div class="vg-card">
+            <div class="card-header-flex">
+              <div class="card-title-text">
+                <i class="fa-solid fa-bell" style="color:var(--accent-yellow);"></i> Security Alerts & Insights
+              </div>
+              <a href="security.html" style="font-size:0.85rem; font-weight:600;">Security Center</a>
+            </div>
+            <div id="dash-security-alerts-box">
+              <div style="text-align:center; padding:20px; color:var(--text-dim);">
+                <i class="fa-solid fa-spinner fa-spin"></i> Evaluating vault health...
+              </div>
+            </div>
+
+            <!-- Categories Quick Filter Grid -->
+            <div style="margin-top:24px; pt-20; border-top:1px solid var(--border-color);">
+              <div style="font-size:0.85rem; font-weight:700; color:var(--text-muted); margin-bottom:12px; text-transform:uppercase;">Quick Service Categories</div>
+              <div class="categories-grid">
+                <a class="category-card" href="vault.html?category=Work">
+                  <div class="category-icon"><i class="fa-solid fa-briefcase"></i></div>
+                  <div class="category-title">Work</div>
+                </a>
+                <a class="category-card" href="vault.html?category=Development">
+                  <div class="category-icon"><i class="fa-solid fa-code"></i></div>
+                  <div class="category-title">Development</div>
+                </a>
+                <a class="category-card" href="vault.html?category=Cloud">
+                  <div class="category-icon"><i class="fa-solid fa-cloud"></i></div>
+                  <div class="category-title">Cloud Services</div>
+                </a>
+                <a class="category-card" href="vault.html?category=Personal">
+                  <div class="category-icon"><i class="fa-solid fa-user-lock"></i></div>
+                  <div class="category-title">Personal</div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="footer-disclaimer">
+          VaultGuard Enterprise v1.0 • Built with AES-256 Zero-Knowledge Architecture & Node.js/Express MySQL REST API.
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - VaultGuard Enterprise</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+  <div class="auth-page-container">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="auth-brand-logo">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <h1 class="auth-brand-title">VaultGuard</h1>
+        <p class="auth-brand-subtitle">Secure access to enterprise credentials & vault assets.</p>
+      </div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label" for="login-email">Email Address</label>
+          <input type="email" id="login-email" class="form-control" placeholder="user@company.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="login-password">Master Password</label>
+          <div class="password-input-wrapper">
+            <input type="password" id="login-password" class="form-control" placeholder="••••••••••••" required>
+            <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility('login-password', this)">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="auth-options-row">
+          <label class="checkbox-label">
+            <input type="checkbox" id="remember-me" checked> Remember session
+          </label>
+          <a href="#" onclick="alert('Contact your system administrator to reset master vault credentials.'); return false;">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn-primary" style="width:100%;">
+          <i class="fa-solid fa-right-to-bracket"></i> Sign In to Vault
+        </button>
+      </form>
+
+      <!-- Quick Demo Account Fill Button -->
+      <div style="margin-top:20px; text-align:center;">
+        <button type="button" class="btn-secondary" style="width:100%; font-size:0.85rem; padding:8px 12px; background:rgba(59,130,246,0.1); border-color:rgba(59,130,246,0.3); color:var(--accent-blue);" onclick="fillDemoCredentials()">
+          <i class="fa-solid fa-user-shield"></i> Use Demo Enterprise Account
+        </button>
+      </div>
+
+      <div class="auth-footer-link">
+        Don't have an account? <a href="register.html">Register new organization user</a>
+      </div>
+
+      <div class="security-badge-note">
+        <i class="fa-solid fa-lock"></i>
+        <span>Protected by AES-256-GCM zero-knowledge vault encryption & bcrypt hash verification.</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      const icon = btn.querySelector('i');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fa-regular fa-eye-slash';
+      } else {
+        input.type = 'password';
+        icon.className = 'fa-regular fa-eye';
+      }
+    }
+
+    function fillDemoCredentials() {
+      document.getElementById('login-email').value = 'demo@vaultguard.local';
+      document.getElementById('login-password').value = 'DemoPassword@123';
+      showToast('Demo enterprise credentials loaded.', 'info');
+    }
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+
+      try {
+        const data = await apiRequest('/auth/login', {
+          method: 'POST',
+          body: JSON.stringify({ email, password })
+        });
+
+        localStorage.setItem('vg_token', data.token);
+        localStorage.setItem('vg_user', JSON.stringify(data.user));
+
+        showToast('Login successful! Redirecting to dashboard...', 'success');
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 600);
+      } catch (err) {
+        showToast(err.message || 'Login failed. Please check credentials.', 'error');
+      }
+    });
+  </script>
+</body>
+</html>

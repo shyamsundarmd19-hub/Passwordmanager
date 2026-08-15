@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Account - VaultGuard Enterprise</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+  <div class="auth-page-container">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="auth-brand-logo">
+          <i class="fa-solid fa-user-plus"></i>
+        </div>
+        <h1 class="auth-brand-title">Create Account</h1>
+        <p class="auth-brand-subtitle">Provision your VaultGuard enterprise password vault.</p>
+      </div>
+
+      <form id="register-form">
+        <div class="form-group">
+          <label class="form-label" for="reg-fullname">Full Name</label>
+          <input type="text" id="reg-fullname" class="form-control" placeholder="Alex Morgan" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-email">Work Email</label>
+          <input type="email" id="reg-email" class="form-control" placeholder="alex@company.com" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-password">Master Vault Password</label>
+          <div class="password-input-wrapper">
+            <input type="password" id="reg-password" class="form-control" placeholder="At least 8 characters" required>
+            <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility('reg-password', this)">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+          <div class="strength-bar-wrapper">
+            <div class="strength-bar-bg">
+              <div id="strength-bar-fill" class="strength-bar-fill"></div>
+            </div>
+            <div id="strength-label" class="strength-text">Password Strength: None</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-confirm-password">Confirm Master Password</label>
+          <div class="password-input-wrapper">
+            <input type="password" id="reg-confirm-password" class="form-control" placeholder="Re-enter password" required>
+            <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility('reg-confirm-password', this)">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:24px;">
+          <label class="checkbox-label" style="font-size:0.8rem;">
+            <input type="checkbox" id="reg-terms" required> I accept the corporate security policy and data encryption guidelines.
+          </label>
+        </div>
+
+        <button type="submit" class="btn-primary" style="width:100%;">
+          <i class="fa-solid fa-shield-check"></i> Register Account
+        </button>
+      </form>
+
+      <div class="auth-footer-link">
+        Already registered? <a href="login.html">Sign in here</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/password-generator.js"></script>
+  <script>
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      const icon = btn.querySelector('i');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fa-regular fa-eye-slash';
+      } else {
+        input.type = 'password';
+        icon.className = 'fa-regular fa-eye';
+      }
+    }
+
+    const regPassword = document.getElementById('reg-password');
+    const barFill = document.getElementById('strength-bar-fill');
+    const labelElem = document.getElementById('strength-label');
+
+    regPassword.addEventListener('input', () => {
+      const pwd = regPassword.value;
+      const res = evaluateStrength(pwd);
+
+      barFill.style.width = `${res.score}%`;
+      labelElem.textContent = `Password Strength: ${res.label}`;
+
+      if (res.score >= 80) {
+        barFill.style.backgroundColor = 'var(--accent-green)';
+      } else if (res.score >= 60) {
+        barFill.style.backgroundColor = 'var(--accent-blue)';
+      } else if (res.score >= 40) {
+        barFill.style.backgroundColor = 'var(--accent-yellow)';
+      } else {
+        barFill.style.backgroundColor = 'var(--accent-red)';
+      }
+    });
+
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fullName = document.getElementById('reg-fullname').value;
+      const email = document.getElementById('reg-email').value;
+      const password = document.getElementById('reg-password').value;
+      const confirmPwd = document.getElementById('reg-confirm-password').value;
+
+      if (password !== confirmPwd) {
+        showToast('Master passwords do not match.', 'warning');
+        return;
+      }
+
+      if (password.length < 8) {
+        showToast('Master password must be at least 8 characters long.', 'warning');
+        return;
+      }
+
+      try {
+        const data = await apiRequest('/auth/register', {
+          method: 'POST',
+          body: JSON.stringify({ full_name: fullName, email, password })
+        });
+
+        localStorage.setItem('vg_token', data.token);
+        localStorage.setItem('vg_user', JSON.stringify(data.user));
+
+        showToast('Account registered successfully! Welcome to VaultGuard.', 'success');
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 800);
+      } catch (err) {
+        showToast(err.message || 'Registration failed.', 'error');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Vault - VaultGuard Enterprise</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/vault.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand-header">
+        <div class="brand-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div>
+          <div class="brand-title">VaultGuard</div>
+          <span class="brand-badge">ENTERPRISE</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main Console</div>
+        <a href="dashboard.html" class="nav-item">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="vault.html" class="nav-item active">
+          <i class="fa-solid fa-vault"></i>
+          <span>Password Vault</span>
+        </a>
+        <a href="vault.html?favorite=true" class="nav-item">
+          <i class="fa-solid fa-star"></i>
+          <span>Favorites</span>
+        </a>
+        <a href="folders.html" class="nav-item">
+          <i class="fa-solid fa-folder-tree"></i>
+          <span>Folders</span>
+        </a>
+
+        <div class="nav-section-label">Security Tools</div>
+        <a href="add-password.html" class="nav-item">
+          <i class="fa-solid fa-key"></i>
+          <span>Add Credential</span>
+        </a>
+        <a href="security.html" class="nav-item">
+          <i class="fa-solid fa-shield-virus"></i>
+          <span>Security Center</span>
+        </a>
+        <a href="activity.html" class="nav-item">
+          <i class="fa-solid fa-list-check"></i>
+          <span>Activity Log</span>
+        </a>
+
+        <div class="nav-section-label">System Account</div>
+        <a href="profile.html" class="nav-item">
+          <i class="fa-regular fa-id-badge"></i>
+          <span>My Profile</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+          <i class="fa-solid fa-sliders"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn-logout-sidebar" onclick="logoutUser()">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout Securely
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-wrapper">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="page-header-title">
+          <i class="fa-solid fa-vault" style="color:var(--accent-blue);"></i> Enterprise Password Vault
+        </div>
+        <div class="topbar-actions">
+          <a href="add-password.html" class="quick-action-btn">
+            <i class="fa-solid fa-plus"></i> Add Credential
+          </a>
+          <a href="profile.html" class="user-profile-pill">
+            <div class="user-avatar user-avatar-display">A</div>
+            <div class="user-info-text user-name-display">Alex Morgan</div>
+          </a>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <div class="content-area">
+        <!-- Search and Filter Bar -->
+        <div class="vault-filter-bar">
+          <div class="search-box-wrapper">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="vault-search-input" class="form-control" placeholder="Search service, username, category or website...">
+          </div>
+          <div class="filter-tabs">
+            <div class="filter-chip active" data-category="All">All Credentials</div>
+            <div class="filter-chip" data-category="Favorites"><i class="fa-solid fa-star" style="color:var(--accent-yellow);"></i> Favorites</div>
+            <div class="filter-chip" data-category="Work">Work</div>
+            <div class="filter-chip" data-category="Development">Development</div>
+            <div class="filter-chip" data-category="Cloud">Cloud Services</div>
+            <div class="filter-chip" data-category="Social">Social</div>
+            <div class="filter-chip" data-category="Finance">Finance</div>
+            <div class="filter-chip" data-category="Personal">Personal</div>
+          </div>
+        </div>
+
+        <!-- Vault Table Container -->
+        <div id="vault-table-container" class="vault-table-container">
+          <table class="vault-table">
+            <thead>
+              <tr>
+                <th>Service Name</th>
+                <th>Username / Email</th>
+                <th>Category</th>
+                <th>Website URL</th>
+                <th>Security</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="vault-table-body">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty State Container -->
+        <div id="vault-empty-state" class="vg-card empty-state-box" style="display:none;">
+          <div class="empty-state-icon">
+            <i class="fa-solid fa-vault"></i>
+          </div>
+          <h3 class="empty-state-title">No credentials found</h3>
+          <p class="empty-state-desc">You have not stored any passwords matching this query or category yet.</p>
+          <a href="add-password.html" class="btn-primary">
+            <i class="fa-solid fa-plus"></i> Store First Credential
+          </a>
+        </div>
+
+        <footer class="footer-disclaimer">
+          VaultGuard Enterprise v1.0 • AES-256 Zero-Knowledge Encrypted Storage.
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <!-- Password Reveal Security Modal -->
+  <div id="reveal-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-shield-halved" style="color:var(--accent-blue);"></i> Decrypted Password
+        </div>
+        <button class="modal-close-btn" onclick="closeRevealModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div style="margin-bottom:20px;">
+        <label class="form-label" style="font-size:0.8rem;">SERVICE ACCOUNT</label>
+        <div id="reveal-service-title" style="font-size:1.1rem; font-weight:700; color:var(--text-main); margin-bottom:12px;">GitHub</div>
+
+        <label class="form-label">DECRYPTED PLAINTEXT PASSWORD</label>
+        <div class="password-input-wrapper">
+          <input type="text" id="reveal-password-field" class="form-control" style="font-family:monospace; font-size:1.1rem; font-weight:700; color:var(--accent-cyan);" readonly>
+          <button type="button" class="toggle-password-btn" title="Copy to clipboard" onclick="copyTextToClipboard(document.getElementById('reveal-password-field').value, 'Password copied!')">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
+        <div id="reveal-countdown" style="font-size:0.75rem; color:var(--accent-yellow); margin-top:8px; font-weight:600; text-align:right;">Auto-hiding in 15s</div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end;">
+        <button class="btn-secondary" onclick="closeRevealModal()">Close Window</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/password-generator.js"></script>
+  <script src="js/vault.js"></script>
+</body>
+</html>

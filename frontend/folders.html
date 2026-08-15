@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Folders - VaultGuard Enterprise</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/vault.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand-header">
+        <div class="brand-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div>
+          <div class="brand-title">VaultGuard</div>
+          <span class="brand-badge">ENTERPRISE</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main Console</div>
+        <a href="dashboard.html" class="nav-item">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="vault.html" class="nav-item">
+          <i class="fa-solid fa-vault"></i>
+          <span>Password Vault</span>
+        </a>
+        <a href="vault.html?favorite=true" class="nav-item">
+          <i class="fa-solid fa-star"></i>
+          <span>Favorites</span>
+        </a>
+        <a href="folders.html" class="nav-item active">
+          <i class="fa-solid fa-folder-tree"></i>
+          <span>Folders</span>
+        </a>
+
+        <div class="nav-section-label">Security Tools</div>
+        <a href="add-password.html" class="nav-item">
+          <i class="fa-solid fa-key"></i>
+          <span>Add Credential</span>
+        </a>
+        <a href="security.html" class="nav-item">
+          <i class="fa-solid fa-shield-virus"></i>
+          <span>Security Center</span>
+        </a>
+        <a href="activity.html" class="nav-item">
+          <i class="fa-solid fa-list-check"></i>
+          <span>Activity Log</span>
+        </a>
+
+        <div class="nav-section-label">System Account</div>
+        <a href="profile.html" class="nav-item">
+          <i class="fa-regular fa-id-badge"></i>
+          <span>My Profile</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+          <i class="fa-solid fa-sliders"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn-logout-sidebar" onclick="logoutUser()">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout Securely
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-wrapper">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="page-header-title">
+          <i class="fa-solid fa-folder-tree" style="color:var(--accent-blue);"></i> Credential Folders
+        </div>
+        <div class="topbar-actions">
+          <button class="quick-action-btn" onclick="openCreateFolderModal()">
+            <i class="fa-solid fa-plus"></i> Create Folder
+          </button>
+          <a href="profile.html" class="user-profile-pill">
+            <div class="user-avatar user-avatar-display">A</div>
+            <div class="user-info-text user-name-display">Alex Morgan</div>
+          </a>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <div class="content-area">
+        <div id="folders-grid-container" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:24px;">
+          <!-- Dynamically populated folders -->
+        </div>
+
+        <footer class="footer-disclaimer">
+          VaultGuard Enterprise v1.0 • Folder Organization & Encryption System.
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <!-- Folder Modal -->
+  <div id="folder-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div id="folder-modal-title" class="modal-title">Create New Folder</div>
+        <button class="modal-close-btn" onclick="closeFolderModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="folder-form">
+        <input type="hidden" id="folder-id-hidden">
+
+        <div class="form-group">
+          <label class="form-label" for="folder-name-input">Folder Name *</label>
+          <input type="text" id="folder-name-input" class="form-control" placeholder="e.g. Cloud Infrastructure" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="folder-desc-input">Description</label>
+          <textarea id="folder-desc-input" class="form-control" rows="3" placeholder="Brief description of credentials grouped in this folder..."></textarea>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:24px;">
+          <button type="button" class="btn-secondary" onclick="closeFolderModal()">Cancel</button>
+          <button type="submit" class="btn-primary">Save Folder</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/folders.js"></script>
+</body>
+</html>

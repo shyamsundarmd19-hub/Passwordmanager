@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile - VaultGuard Enterprise</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand-header">
+        <div class="brand-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div>
+          <div class="brand-title">VaultGuard</div>
+          <span class="brand-badge">ENTERPRISE</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main Console</div>
+        <a href="dashboard.html" class="nav-item">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="vault.html" class="nav-item">
+          <i class="fa-solid fa-vault"></i>
+          <span>Password Vault</span>
+        </a>
+        <a href="vault.html?favorite=true" class="nav-item">
+          <i class="fa-solid fa-star"></i>
+          <span>Favorites</span>
+        </a>
+        <a href="folders.html" class="nav-item">
+          <i class="fa-solid fa-folder-tree"></i>
+          <span>Folders</span>
+        </a>
+
+        <div class="nav-section-label">Security Tools</div>
+        <a href="add-password.html" class="nav-item">
+          <i class="fa-solid fa-key"></i>
+          <span>Add Credential</span>
+        </a>
+        <a href="security.html" class="nav-item">
+          <i class="fa-solid fa-shield-virus"></i>
+          <span>Security Center</span>
+        </a>
+        <a href="activity.html" class="nav-item">
+          <i class="fa-solid fa-list-check"></i>
+          <span>Activity Log</span>
+        </a>
+
+        <div class="nav-section-label">System Account</div>
+        <a href="profile.html" class="nav-item active">
+          <i class="fa-regular fa-id-badge"></i>
+          <span>My Profile</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+          <i class="fa-solid fa-sliders"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn-logout-sidebar" onclick="logoutUser()">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout Securely
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-wrapper">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="page-header-title">
+          <i class="fa-regular fa-id-badge" style="color:var(--accent-blue);"></i> User Account Profile
+        </div>
+        <div class="topbar-actions">
+          <div class="user-profile-pill">
+            <div class="user-avatar user-avatar-display">A</div>
+            <div class="user-info-text user-name-display">Alex Morgan</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <div class="content-area">
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:24px;">
+          <!-- Profile Details Card -->
+          <div class="vg-card">
+            <div class="card-header-flex">
+              <div class="card-title-text">
+                <i class="fa-solid fa-user-gear" style="color:var(--accent-blue);"></i> Account Profile
+              </div>
+              <span id="profile-role" class="badge badge-category">USER</span>
+            </div>
+
+            <form id="profile-details-form">
+              <div class="form-group">
+                <label class="form-label" for="profile-fullname">Full Name</label>
+                <input type="text" id="profile-fullname" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="profile-email">Work Email</label>
+                <input type="email" id="profile-email" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Account Created</label>
+                <div id="profile-created-at" style="font-size:0.95rem; font-weight:600; color:var(--text-muted); padding:10px 0;">-</div>
+              </div>
+
+              <button type="submit" class="btn-primary" style="margin-top:12px;">
+                <i class="fa-solid fa-floppy-disk"></i> Update Profile Details
+              </button>
+            </form>
+          </div>
+
+          <!-- Master Password Update Card -->
+          <div class="vg-card">
+            <div class="card-header-flex">
+              <div class="card-title-text">
+                <i class="fa-solid fa-key" style="color:var(--accent-yellow);"></i> Change Master Vault Password
+              </div>
+            </div>
+
+            <form id="change-password-form">
+              <div class="form-group">
+                <label class="form-label" for="master-current-pwd">Current Master Password</label>
+                <input type="password" id="master-current-pwd" class="form-control" placeholder="••••••••••••" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="master-new-pwd">New Master Password</label>
+                <input type="password" id="master-new-pwd" class="form-control" placeholder="At least 8 characters" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="master-confirm-pwd">Confirm New Master Password</label>
+                <input type="password" id="master-confirm-pwd" class="form-control" placeholder="Re-enter new password" required>
+              </div>
+
+              <button type="submit" class="btn-primary" style="margin-top:12px; background-color:var(--accent-yellow); color:#000;">
+                <i class="fa-solid fa-shield-check"></i> Update Master Password
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <footer class="footer-disclaimer">
+          VaultGuard Enterprise v1.0 • User Security Management.
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>

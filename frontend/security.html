@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security Center - VaultGuard Enterprise</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand-header">
+        <div class="brand-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div>
+          <div class="brand-title">VaultGuard</div>
+          <span class="brand-badge">ENTERPRISE</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main Console</div>
+        <a href="dashboard.html" class="nav-item">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="vault.html" class="nav-item">
+          <i class="fa-solid fa-vault"></i>
+          <span>Password Vault</span>
+        </a>
+        <a href="vault.html?favorite=true" class="nav-item">
+          <i class="fa-solid fa-star"></i>
+          <span>Favorites</span>
+        </a>
+        <a href="folders.html" class="nav-item">
+          <i class="fa-solid fa-folder-tree"></i>
+          <span>Folders</span>
+        </a>
+
+        <div class="nav-section-label">Security Tools</div>
+        <a href="add-password.html" class="nav-item">
+          <i class="fa-solid fa-key"></i>
+          <span>Add Credential</span>
+        </a>
+        <a href="security.html" class="nav-item active">
+          <i class="fa-solid fa-shield-virus"></i>
+          <span>Security Center</span>
+        </a>
+        <a href="activity.html" class="nav-item">
+          <i class="fa-solid fa-list-check"></i>
+          <span>Activity Log</span>
+        </a>
+
+        <div class="nav-section-label">System Account</div>
+        <a href="profile.html" class="nav-item">
+          <i class="fa-regular fa-id-badge"></i>
+          <span>My Profile</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+          <i class="fa-solid fa-sliders"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn-logout-sidebar" onclick="logoutUser()">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout Securely
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-wrapper">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="page-header-title">
+          <i class="fa-solid fa-shield-virus" style="color:var(--accent-blue);"></i> Enterprise Security Center
+        </div>
+        <div class="topbar-actions">
+          <a href="profile.html" class="user-profile-pill">
+            <div class="user-avatar user-avatar-display">A</div>
+            <div class="user-info-text user-name-display">Alex Morgan</div>
+          </a>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <div class="content-area">
+        <!-- Security Score Banner -->
+        <div class="security-score-banner">
+          <div class="score-text-area">
+            <h3 style="font-size:1.4rem; color:var(--text-main);">Enterprise Vault Security Health Audit</h3>
+            <p>Calculated based on password entropy, length, complexity, and duplication detection across stored service accounts.</p>
+          </div>
+          <div class="score-circle-box">
+            <div>
+              <span id="sec-overall-score" class="score-big-number">100</span>
+              <span class="score-max-text">/ 100</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security Checks Table -->
+        <div class="vg-card">
+          <div class="card-header-flex">
+            <div class="card-title-text">
+              <i class="fa-solid fa-list-check" style="color:var(--accent-blue);"></i> Security Compliance Checks
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:16px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:16px; background:var(--bg-input); border-radius:var(--radius-md);">
+              <div style="display:flex; align-items:center; gap:14px;">
+                <i class="fa-solid fa-circle-check" style="color:var(--accent-green); font-size:1.4rem;"></i>
+                <div>
+                  <strong style="color:var(--text-main);">Bcrypt Master Vault Password Hashing</strong>
+                  <div style="font-size:0.8rem; color:var(--text-muted);">Master password verified using adaptive bcrypt hashing with unique salt.</div>
+                </div>
+              </div>
+              <span class="badge badge-strong">COMPLIANT</span>
+            </div>
+
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:16px; background:var(--bg-input); border-radius:var(--radius-md);">
+              <div style="display:flex; align-items:center; gap:14px;">
+                <i class="fa-solid fa-circle-check" style="color:var(--accent-green); font-size:1.4rem;"></i>
+                <div>
+                  <strong style="color:var(--text-main);">AES-256-GCM Zero-Knowledge Encryption</strong>
+                  <div style="font-size:0.8rem; color:var(--text-muted);">All vault passwords encrypted client-side / backend prior to MySQL persistence.</div>
+                </div>
+              </div>
+              <span class="badge badge-strong">ACTIVE</span>
+            </div>
+
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:16px; background:var(--bg-input); border-radius:var(--radius-md);">
+              <div style="display:flex; align-items:center; gap:14px;">
+                <i class="fa-solid fa-triangle-exclamation" style="color:var(--accent-yellow); font-size:1.4rem;"></i>
+                <div>
+                  <strong style="color:var(--text-main);">Weak Password Audit</strong>
+                  <div style="font-size:0.8rem; color:var(--text-muted);"><span id="sec-weak-count">0</span> weak credentials identified in vault storage.</div>
+                </div>
+              </div>
+              <a href="vault.html" class="btn-secondary" style="font-size:0.8rem; padding:6px 12px;">Audit Passwords</a>
+            </div>
+
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:16px; background:var(--bg-input); border-radius:var(--radius-md);">
+              <div style="display:flex; align-items:center; gap:14px;">
+                <i class="fa-solid fa-clone" style="color:var(--accent-yellow); font-size:1.4rem;"></i>
+                <div>
+                  <strong style="color:var(--text-main);">Reused Passwords Audit</strong>
+                  <div style="font-size:0.8rem; color:var(--text-muted);"><span id="sec-reused-count">0</span> duplicate credentials reused across multiple accounts.</div>
+                </div>
+              </div>
+              <a href="vault.html" class="btn-secondary" style="font-size:0.8rem; padding:6px 12px;">View Duplicates</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recommendations Box -->
+        <div class="vg-card">
+          <div class="card-header-flex">
+            <div class="card-title-text">
+              <i class="fa-solid fa-lightbulb" style="color:var(--accent-cyan);"></i> Security Recommendations
+            </div>
+          </div>
+          <ul style="padding-left:20px; color:var(--text-muted); line-height:1.8; font-size:0.9rem;">
+            <li>Replace any passwords flagged as <strong>Weak</strong> with 16+ character high-entropy generated keys.</li>
+            <li>Ensure no single password is shared across both internal corporate servers and external public platforms.</li>
+            <li>Set up automatic session logout timeout in <a href="settings.html">Settings</a> to prevent unauthorized physical terminal access.</li>
+          </ul>
+        </div>
+
+        <footer class="footer-disclaimer">
+          VaultGuard Enterprise v1.0 • Cybersecurity Audit Engine.
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/security.js"></script>
+</body>
+</html>

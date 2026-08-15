@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VaultGuard - Enterprise Password Manager</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body style="background-color:#080c14; display:flex; align-items:center; justify-content:center; height:100vh; color:#fff; font-family:'Inter', sans-serif;">
+  <div style="text-align:center;">
+    <div class="brand-icon" style="width:64px; height:64px; font-size:2rem; margin:0 auto 20px auto;">
+      <i class="fa-solid fa-shield-halved"></i>
+    </div>
+    <h1 style="font-size:2rem; font-weight:800; margin-bottom:10px;">VaultGuard</h1>
+    <p style="color:var(--text-muted); margin-bottom:20px;">Securing enterprise digital assets...</p>
+    <div style="font-size:0.9rem; color:var(--accent-blue);"><i class="fa-solid fa-circle-notch fa-spin"></i> Initializing session...</div>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      const token = localStorage.getItem('vg_token');
+      if (token) {
+        window.location.href = 'dashboard.html';
+      } else {
+        window.location.href = 'login.html';
+      }
+    }, 600);
+  </script>
+</body>
+</html>

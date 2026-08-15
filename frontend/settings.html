@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - VaultGuard Enterprise</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand-header">
+        <div class="brand-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div>
+          <div class="brand-title">VaultGuard</div>
+          <span class="brand-badge">ENTERPRISE</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main Console</div>
+        <a href="dashboard.html" class="nav-item">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="vault.html" class="nav-item">
+          <i class="fa-solid fa-vault"></i>
+          <span>Password Vault</span>
+        </a>
+        <a href="vault.html?favorite=true" class="nav-item">
+          <i class="fa-solid fa-star"></i>
+          <span>Favorites</span>
+        </a>
+        <a href="folders.html" class="nav-item">
+          <i class="fa-solid fa-folder-tree"></i>
+          <span>Folders</span>
+        </a>
+
+        <div class="nav-section-label">Security Tools</div>
+        <a href="add-password.html" class="nav-item">
+          <i class="fa-solid fa-key"></i>
+          <span>Add Credential</span>
+        </a>
+        <a href="security.html" class="nav-item">
+          <i class="fa-solid fa-shield-virus"></i>
+          <span>Security Center</span>
+        </a>
+        <a href="activity.html" class="nav-item">
+          <i class="fa-solid fa-list-check"></i>
+          <span>Activity Log</span>
+        </a>
+
+        <div class="nav-section-label">System Account</div>
+        <a href="profile.html" class="nav-item">
+          <i class="fa-regular fa-id-badge"></i>
+          <span>My Profile</span>
+        </a>
+        <a href="settings.html" class="nav-item active">
+          <i class="fa-solid fa-sliders"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn-logout-sidebar" onclick="logoutUser()">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout Securely
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-wrapper">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="page-header-title">
+          <i class="fa-solid fa-sliders" style="color:var(--accent-blue);"></i> Security & System Preferences
+        </div>
+        <div class="topbar-actions">
+          <a href="profile.html" class="user-profile-pill">
+            <div class="user-avatar user-avatar-display">A</div>
+            <div class="user-info-text user-name-display">Alex Morgan</div>
+          </a>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <div class="content-area">
+        <div style="max-width:720px; margin:0 auto;">
+          <div class="vg-card">
+            <div class="card-header-flex">
+              <div class="card-title-text">
+                <i class="fa-solid fa-user-shield" style="color:var(--accent-blue);"></i> Security Preferences
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="setting-autologout">Automatic Inactivity Logout</label>
+              <select id="setting-autologout" class="form-select">
+                <option value="5">5 Minutes</option>
+                <option value="15">15 Minutes (Default)</option>
+                <option value="30">30 Minutes</option>
+                <option value="60">1 Hour</option>
+                <option value="never">Never (Keep Session)</option>
+              </select>
+              <span style="font-size:0.75rem; color:var(--text-dim);">Automatically locks session when terminal remains idle.</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="setting-reveal-timeout">Password Reveal Clipboard Timeout</label>
+              <select id="setting-reveal-timeout" class="form-select">
+                <option value="10">10 Seconds</option>
+                <option value="15">15 Seconds (Default)</option>
+                <option value="30">30 Seconds</option>
+                <option value="60">60 Seconds</option>
+              </select>
+              <span style="font-size:0.75rem; color:var(--text-dim);">Duration decrypted plaintext passwords remain visible on screen.</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Application Theme</label>
+              <input type="text" class="form-control" value="Dark Navy Corporate Cybersecurity Theme" disabled style="opacity:0.7;">
+            </div>
+          </div>
+        </div>
+
+        <footer class="footer-disclaimer">
+          VaultGuard Enterprise v1.0 • System Preferences.
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+</html>
