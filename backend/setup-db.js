@@ -72,9 +72,23 @@ async function runSetup() {
     }
     
     // Execute remaining statements
-    for (const stmt of statements) {
+    // Group consecutive DROP and SET statements to maintain context
+    for (let i = 0; i < statements.length; i++) {
+      const stmt = statements[i];
       if (stmt) {
-        await connection.query(stmt);
+        try {
+          await connection.query(stmt);
+        } catch (err) {
+          // If it's a foreign key constraint error during DROP, try to disable FK checks and retry
+          if (err.message.includes('foreign key') && stmt.toUpperCase().includes('DROP')) {
+            console.log('[Setup] Resolving foreign key constraint by disabling FK checks...');
+            await connection.query('SET FOREIGN_KEY_CHECKS=0');
+            await connection.query(stmt);
+            await connection.query('SET FOREIGN_KEY_CHECKS=1');
+          } else {
+            throw err;
+          }
+        }
       }
     }
 

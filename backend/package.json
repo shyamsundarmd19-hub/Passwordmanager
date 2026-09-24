@@ -4,7 +4,7 @@
   "description": "VaultGuard Enterprise Password Manager Backend API",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"$port = 5000; $processIds = Get-NetTCPConnection -LocalPort $port -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique; if ($processIds) { foreach ($procId in $processIds) { try { Stop-Process -Id $procId -Force -ErrorAction Stop; Write-Host \"Stopped process $procId using port $port\" } catch { } } }; node server.js\"",
     "dev": "node server.js",
     "setup-db": "node setup-db.js"
   },

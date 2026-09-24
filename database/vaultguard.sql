@@ -6,11 +6,17 @@
 CREATE DATABASE IF NOT EXISTS `vaultguard_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `vaultguard_db`;
 
+-- Disable foreign key checks temporarily to allow table drops
+SET FOREIGN_KEY_CHECKS=0;
+
 -- Drop existing tables if re-initialising
 DROP TABLE IF EXISTS `activity_logs`;
 DROP TABLE IF EXISTS `passwords`;
 DROP TABLE IF EXISTS `folders`;
 DROP TABLE IF EXISTS `users`;
+
+-- Re-enable foreign key checks
+SET FOREIGN_KEY_CHECKS=1;
 
 -- --------------------------------------------------------
 -- Table Structure: Users

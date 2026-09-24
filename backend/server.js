@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const net = require('net');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const dotenv = require('dotenv');
@@ -69,16 +70,49 @@ app.get('*', (req, res, next) => {
 app.use(notFoundHandler);
 app.use(errorHandler);
 
+function getAvailablePort(startPort) {
+  return new Promise((resolve, reject) => {
+    const tester = net.createServer();
+
+    tester.once('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        resolve(getAvailablePort(startPort + 1));
+      } else {
+        reject(err);
+      }
+    });
+
+    tester.once('listening', () => {
+      tester.close(() => resolve(startPort));
+    });
+
+    tester.listen(startPort, '0.0.0.0');
+  });
+}
+
 // Start Server
 async function startServer() {
-  await initializeDatabase();
-  app.listen(PORT, () => {
-    console.log(`=======================================================`);
-    console.log(`  VaultGuard Enterprise Password Manager Server Running `);
-    console.log(`  Port: http://localhost:${PORT}`);
-    console.log(`  Environment: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`=======================================================`);
-  });
+  try {
+    await initializeDatabase();
+
+    const availablePort = await getAvailablePort(Number(PORT));
+    const finalPort = Number(availablePort);
+
+    if (finalPort !== Number(PORT)) {
+      console.warn(`Port ${PORT} is busy. Falling back to port ${finalPort}.`);
+    }
+
+    app.listen(finalPort, () => {
+      console.log(`=======================================================`);
+      console.log(`  VaultGuard Enterprise Password Manager Server Running `);
+      console.log(`  Port: http://localhost:${finalPort}`);
+      console.log(`  Environment: ${process.env.NODE_ENV || 'development'}`);
+      console.log(`=======================================================`);
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
 }
 
 startServer();
