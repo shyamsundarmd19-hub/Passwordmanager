@@ -1,134 +1,152 @@
-# VaultGuard – Enterprise Password Manager
+# 🔐 VaultGuard - Enterprise Password Manager & Credential Security Platform
 
-**VaultGuard** is a realistic, production-style Enterprise Password Manager web application designed for organizations and teams to securely store, manage, and audit digital credentials for web applications, cloud platforms (AWS, Azure, GCP), databases, Git repositories, servers, and internal company tools.
-
----
-
-## Key Features
-
-- **Master Password Security**: Authentication powered by **bcrypt** password hashing.
-- **Zero-Knowledge Encryption**: Vault credentials encrypted with **AES-256-GCM** using unique IVs and authentication tags.
-- **Credential Vault Management**: Full CRUD operations for credentials with service names, usernames, encrypted passwords, website URLs, categories, notes, and favorite flags.
-- **Folder Organization**: Categorize credentials into custom organizational folders (Work, Development, Cloud Services, Company Accounts, Personal).
-- **Search & Dynamic Filtering**: Instant search across services, usernames, categories, and folders.
-- **High-Entropy Password Generator**: Built-in generator customizable by length, uppercase, lowercase, numbers, and special symbols with real-time strength evaluation.
-- **Decryption-on-Request**: Passwords remain masked (`••••••••••••`) until an authorized user requests decryption with auto-closing security countdown timer.
-- **Enterprise Security Center**: Real-time vault security health score calculation out of 100, auditing weak passwords and credential reuse across services.
-- **Security Audit Activity Log**: Automated tracking of all key user actions (login, credential addition, edit, deletion, password reveal).
-- **Dark Navy Cybersecurity UI**: Modern, glassmorphic corporate dashboard design system with FontAwesome icons and responsive navigation.
+A full-stack, enterprise-grade password management and credential auditing platform built with Node.js, Express.js, MySQL 8.0, Native AES-256-GCM Crypto, JavaScript (ES6+), and HTML5/CSS3.
 
 ---
 
-## Technology Stack
+## 🌟 Key Features
 
-- **Frontend**: HTML5, CSS3 (Vanilla CSS Design System + Dark Navy Theme), JavaScript (ES6+, Fetch API), FontAwesome 6 Icons.
-- **Backend**: Node.js, Express.js, JWT (`jsonwebtoken`), `bcryptjs`, Native `crypto` (AES-256-GCM), `cors`, `express-rate-limit`.
-- **Database**: MySQL 8.0+ (`mysql2/promise` with parameterized SQL queries).
+### Authentication & Master Vault Security:
+- **Master Password Security**: User authentication powered by **bcrypt** password hashing with salt rounds.
+- **Zero-Knowledge Architecture**: Credentials encrypted with **AES-256-GCM** using unique initialization vectors (IV) and authentication tags.
+- **JWT Session Authorization**: Stateless, secure Bearer token authentication safeguarding all vault access and API routes.
+- **Instant Demo Login**: One-click instant enterprise demo account access for fast feature evaluation.
+
+### Credential Vault & Organization:
+- **Full Credential Lifecycle**: Complete CRUD operations for logins, servers, databases, cloud keys (AWS/GCP/Azure), and Git tokens.
+- **Folder Management**: Organize items into dedicated departmental folders (Work, Development, Cloud Services, Company Accounts, Personal).
+- **Instant Search & Real-Time Filtering**: High-speed filtering by service name, username, folder, category, and favorite status.
+- **Favorites & Quick Actions**: Pin essential daily credentials to the top with one-click copy and edit capabilities.
+
+### Security Center & Health Auditing:
+- **Real-Time Security Health Score**: Dynamic algorithm evaluating total vault strength on a scale of 0 to 100.
+- **Vulnerability Diagnostics**: Instant identification of weak passwords, reused credentials, and at-risk legacy accounts.
+- **Decryption-on-Request**: Passwords remain masked (`••••••••••••`) by default with an auto-mask security countdown timer (10s) upon decryption.
+- **Audit Activity Log**: Comprehensive timestamped audit trail tracking logins, additions, modifications, reveals, and deletions.
+
+### High-Entropy Generator & Cyber-Dark UI:
+- **Customizable Password Generator**: Built-in generator customizable by length, uppercase, lowercase, numbers, and symbols with real-time entropy calculation.
+- **Modern Cyber-Dark Interface**: Glassmorphic dashboard styled with responsive Vanilla CSS tokens, FontAwesome 6 icons, and smooth micro-interactions.
+- **Smart Port Fallback**: Resilient server architecture with automated port conflict resolution and database migration handlers.
 
 ---
 
-## Directory Structure
+## 📂 Project Structure
 
 ```text
-password manager/
-├── frontend/
-│   ├── index.html
-│   ├── login.html
-│   ├── register.html
-│   ├── dashboard.html
-│   ├── vault.html
-│   ├── add-password.html
-│   ├── edit-password.html
-│   ├── folders.html
-│   ├── security.html
-│   ├── activity.html
-│   ├── profile.html
-│   ├── settings.html
-│   ├── css/
-│   │   ├── style.css
-│   │   ├── login.css
-│   │   ├── dashboard.css
-│   │   └── vault.css
-│   └── js/
-│       ├── api.js
-│       ├── auth.js
-│       ├── dashboard.js
-│       ├── vault.js
-│       ├── password-generator.js
-│       ├── folders.js
-│       ├── security.js
-│       ├── activity.js
-│       ├── profile.js
-│       └── settings.js
-├── backend/
-│   ├── server.js
-│   ├── package.json
-│   ├── .env
-│   ├── .env.example
+password-manager/
+│── backend/
 │   ├── config/
-│   │   └── db.js
-│   ├── utils/
-│   │   ├── encryption.js
-│   │   └── passwordGenerator.js
-│   ├── middleware/
-│   │   ├── authMiddleware.js
-│   │   └── errorMiddleware.js
-│   ├── models/
-│   │   ├── User.js
-│   │   ├── Password.js
-│   │   ├── Folder.js
-│   │   └── Activity.js
+│   │   └── db.js                 # MySQL database connection pool
 │   ├── controllers/
-│   │   ├── authController.js
-│   │   ├── passwordController.js
-│   │   ├── folderController.js
-│   │   ├── userController.js
-│   │   └── activityController.js
-│   └── routes/
-│       ├── authRoutes.js
-│       ├── passwordRoutes.js
-│       ├── folderRoutes.js
-│       ├── userRoutes.js
-│       └── activityRoutes.js
-├── database/
-│   └── vaultguard.sql
-├── README.md
-└── .gitignore
+│   │   ├── authController.js     # User registration, login & token logic
+│   │   ├── passwordController.js # Credential CRUD, metrics & decryption
+│   │   ├── folderController.js   # Folder organization operations
+│   │   ├── userController.js     # Profile & master password updates
+│   │   └── activityController.js # Security audit activity logging
+│   ├── middleware/
+│   │   ├── authMiddleware.js     # JWT Bearer token verification
+│   │   └── errorMiddleware.js    # Centralized HTTP error handling
+│   ├── models/
+│   │   ├── User.js               # User authentication database model
+│   │   ├── Password.js           # Credential vault database model
+│   │   ├── Folder.js             # Organizational folder model
+│   │   └── Activity.js           # Audit trail log database model
+│   ├── routes/
+│   │   ├── authRoutes.js         # Authentication REST endpoints
+│   │   ├── passwordRoutes.js     # Vault operations REST endpoints
+│   │   ├── folderRoutes.js       # Folder management REST endpoints
+│   │   ├── userRoutes.js         # Profile management REST endpoints
+│   │   └── activityRoutes.js     # Audit activity REST endpoints
+│   ├── utils/
+│   │   ├── encryption.js         # AES-256-GCM cipher and decipher engine
+│   │   └── passwordGenerator.js  # Cryptographically secure string generator
+│   ├── package.json              # Backend dependencies & startup scripts
+│   ├── server.js                 # Express server & static asset dispatcher
+│   ├── setup-db.js               # Automated schema migration & seed script
+│   └── .env.example              # Template environment configuration
+│── database/
+│   └── vaultguard.sql            # Master SQL schema & demo seeds
+│── frontend/
+│   ├── css/
+│   │   ├── style.css             # Design tokens, variables & typography
+│   │   ├── login.css             # Authentication portal styling
+│   │   ├── dashboard.css         # Analytics & statistics dashboard layout
+│   │   └── vault.css             # Vault list, modals & generator styles
+│   ├── js/
+│   │   ├── api.js                # Fetch API client & token interceptor
+│   │   ├── auth.js               # Login, register & session controller
+│   │   ├── dashboard.js          # Metric cards & recent activity widget
+│   │   ├── vault.js              # Credential list, reveal & filter manager
+│   │   ├── password-generator.js # Interactive password generator modal
+│   │   ├── folders.js            # Folder manager controller
+│   │   ├── security.js           # Security health audit engine
+│   │   ├── activity.js           # Audit log history table controller
+│   │   ├── profile.js            # User profile & account details
+│   │   └── settings.js           # Vault security & preference controls
+│   ├── index.html                # Landing page & feature showcase
+│   ├── login.html                # Sign in portal
+│   ├── register.html             # Registration portal
+│   ├── dashboard.html            # Main enterprise analytics dashboard
+│   ├── vault.html                # All passwords & credentials manager
+│   ├── add-password.html         # New credential creation view
+│   ├── edit-password.html        # Credential editor view
+│   ├── folders.html              # Custom organizational folders view
+│   ├── security.html             # Vault security audit dashboard
+│   ├── activity.html             # Audit trail activity history view
+│   ├── profile.html              # User profile & credentials view
+│   └── settings.html             # Security configuration & theme settings
+│── .gitignore                    # Git ignore rules for node_modules & secrets
+│── LICENSE                       # MIT License
+└── README.md                     # Project documentation & instructions
 ```
 
 ---
 
-## Database Setup (MySQL)
+## 💻 Installation & Setup
 
-1. Start your MySQL Server (via XAMPP, MySQL Workbench, or local service).
-2. Open terminal/command prompt and import `database/vaultguard.sql`:
+### Prerequisites
+- **Node.js**: v18.0.0 or higher installed.
+- **MySQL Server**: v8.0+ (via XAMPP, MySQL Workbench, or local service).
 
+---
+
+### 1. Clone Repository
+Ensure you are in your project directory:
 ```bash
-mysql -u root -p < database/vaultguard.sql
+git clone https://github.com/shyamsundarmd19-hub/Passwordmanager.git
+cd Passwordmanager
 ```
-
-Alternatively, open `database/vaultguard.sql` in phpMyAdmin or MySQL Workbench and execute the script.
-
-### Pre-seeded Demo Credentials:
-- **Email**: `demo@vaultguard.local`
-- **Master Password**: `DemoPassword@123`
 
 ---
 
-## Backend Setup & Installation
-
-1. Navigate to `backend` folder:
+### 2. Install Dependencies
+Navigate into the `backend` directory and install the required npm packages:
 ```bash
 cd backend
-```
-
-2. Install Node.js dependencies:
-```bash
 npm install
 ```
 
-3. Configure Environment Variables in `.env`:
-Ensure your `.env` matches your MySQL installation credentials:
+---
+
+### 3. Database Setup
+
+#### Option A: Automated CLI Migration (Recommended)
+Run the built-in database setup script to automatically create `vaultguard_db` tables and seed initial demo data:
+```bash
+npm run setup-db
+```
+
+#### Option B: Manual SQL Import
+Import `database/vaultguard.sql` using MySQL CLI or phpMyAdmin / MySQL Workbench:
+```bash
+mysql -u root -p < ../database/vaultguard.sql
+```
+
+---
+
+### 4. Configure Environment Variables
+Create or verify the `.env` file in the `backend/` directory:
 ```env
 PORT=5000
 DB_HOST=localhost
@@ -141,61 +159,44 @@ ENCRYPTION_KEY=a1b2c3d4e5f60718293a4b5c6d7e8f9011223344556677889900aabbccddeeff
 NODE_ENV=development
 ```
 
-4. Run the Server:
+---
+
+### 5. Run the Application
+Start the VaultGuard server:
 ```bash
 npm start
 ```
-The server automatically tests MySQL connectivity, creates missing tables, and serves the complete frontend application at `http://localhost:5000`.
+
+Open your browser and visit: **[http://localhost:5000](http://localhost:5000)**
 
 ---
 
-## How to Run & Access
-
-1. Open your browser and navigate to:
-```text
-http://localhost:5000
-```
-2. Click **"Use Demo Enterprise Account"** on the login page or click **"Register new organization user"** to create a custom vault account.
+## 🌐 Live Demo
+- **Repository URL**: [https://github.com/shyamsundarmd19-hub/Passwordmanager.git](https://github.com/shyamsundarmd19-hub/Passwordmanager.git)
+- **Live Local Access**: [http://localhost:5000](http://localhost:5000)
 
 ---
 
-## REST API Documentation
+## 🔑 Default Accounts & Sample Tracking Data (Created Automatically)
 
-### Authentication Routes
-- `POST /api/auth/register`: Create a new user account.
-- `POST /api/auth/login`: Authenticate master password & return JWT token.
-- `GET /api/auth/me`: Get current logged-in user profile.
-
-### Password Vault Routes
-- `GET /api/passwords`: Retrieve encrypted credentials (filtered by category, folder, favorite, or search query).
-- `GET /api/passwords/metrics`: Retrieve vault security score, weak password count, and duplicate count.
-- `GET /api/passwords/generate`: Utility endpoint for server-side password generation.
-- `GET /api/passwords/:id`: Retrieve single credential metadata.
-- `GET /api/passwords/:id/reveal`: Decrypt and return plaintext password for authorized user.
-- `POST /api/passwords`: Encrypt and save new credential.
-- `PUT /api/passwords/:id`: Update existing credential details and re-encrypt.
-- `PATCH /api/passwords/:id/favorite`: Toggle favorite status.
-- `DELETE /api/passwords/:id`: Delete credential from vault.
-
-### Folder Routes
-- `GET /api/folders`: List all user folders with credential counts.
-- `POST /api/folders`: Create new folder.
-- `PUT /api/folders/:id`: Rename / update folder description.
-- `DELETE /api/folders/:id`: Delete folder.
-
-### User & Activity Routes
-- `GET /api/users/profile`: Get profile details.
-- `PUT /api/users/profile`: Update profile info.
-- `POST /api/users/change-password`: Update master vault password.
-- `GET /api/activity`: Fetch security audit activity logs.
+| Role / Entity | Identifier / Email | Default Password | Features Accessible |
+| :--- | :--- | :--- | :--- |
+| **Enterprise User** | `demo@vaultguard.local` | `DemoPassword@123` | Full Vault Access, Security Health Center, Folder Management, Generator, Audit Logs |
+| **Custom Registration** | Any valid email | User-defined (8+ chars) | Private isolated vault, custom folders, security metrics, profile manager |
+| **Demo Credentials** | Pre-seeded (AWS, GitHub, Slack) | Encrypted (AES-256-GCM) | Decryption-on-request, category filtering, strength auditing |
 
 ---
 
-## Production & Deployment Considerations
+## 🔒 Security Best Practices Implemented
 
-> [!IMPORTANT]
-> For real-world production deployment beyond local demonstration:
-> 1. Enforce HTTPS/TLS encryption across all endpoints.
-> 2. Implement Hardware Security Module (HSM) or Cloud Key Management System (AWS KMS / HashiCorp Vault) for master AES encryption key storage.
-> 3. Enable multi-factor authentication (TOTP/WebAuthn).
-> 4. Conduct periodic third-party security penetration testing and database backup replication.
+- **Military-Grade AES-256-GCM Encryption**: Every stored credential is encrypted with authenticated symmetric encryption, generating a unique Initialization Vector (IV) and authentication tag for tamper detection.
+- **Bcrypt Password Hashing**: Master user passwords are salted and hashed with bcrypt, ensuring raw credentials never touch the database.
+- **Decryption-on-Request Barrier**: Passwords remain masked in the UI and are only decrypted over encrypted channels when explicitly requested by an authorized user, accompanied by an auto-mask security timer.
+- **JWT Role-Based Access Control**: All vault endpoints require valid Bearer token authorization, isolating vault records per tenant/user.
+- **SQL Injection Prevention**: Parameterized prepared statements across all database queries (`mysql2/promise`).
+- **Brute-Force & Rate Limiting**: Express rate limiting middleware protects authentication endpoints from credential stuffing and dictionary attacks.
+
+---
+
+## 📄 License
+Distributed under the MIT License. See [LICENSE](file:///c:/Users/shyam/OneDrive/Documents/shyam%20projects/password%20manager/LICENSE) for more information.
